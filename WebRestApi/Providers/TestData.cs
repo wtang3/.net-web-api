@@ -81,21 +81,21 @@ namespace WebRestApi.Providers
         /// 
         /// </summary>
         /// <param name="employee"></param>
-        public string SetEmployee(string Name, string Department, int id=-1)
+        public bool SetEmployee(string Name, string Department, int Id)
         {
-            if (id != -1)
+            if (Id == 0)
             {
                 var name = employees.Where(x => x.Name == Name);
                 var employee = new Employee();
                 if (!name.Any())
                 {
-                    id = employees.Last().Id;
-                    employee.Id = id + 1;
+                    Id = employees.Last().Id;
+                    employee.Id = Id + 1;
                     employee.Name = Name;
                     employee.Department = Department;
                     employees.Add(employee);
 
-                    return "Success";
+                    return true;
                 }
             }
             else
@@ -104,15 +104,15 @@ namespace WebRestApi.Providers
                 var employee = new Employee();
                 if (!name.Any())
                 {
-                    employee.Id = id;
+                    employee.Id = Id;
                     employee.Name = Name;
                     employee.Department = Department;
                     employees.Add(employee);
 
-                    return "Success";
+                    return true;
                 }
             }
-            return "Request Failed";
+            return false;
         }
     }
 }

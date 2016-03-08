@@ -9,6 +9,6 @@ namespace WebRestApi.Interfaces
     {
         List<Employee> GetEmployees();
         Employee  GetEmployee(int id);
-        string SetEmployee(string Name, string Department, int id );
+        bool SetEmployee(string Name, string Department, int id );
     }
 }

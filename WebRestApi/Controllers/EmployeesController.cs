@@ -3,6 +3,7 @@ using System.Web.Http;
 using WebRestApi.Providers;
 using WebRestApi.Interfaces;
 using WebRestApi.Helpers;
+using WebRestApi.Models;
 
 namespace WebRestApi.Controllers
 {
@@ -22,8 +23,10 @@ namespace WebRestApi.Controllers
             _repository = repository;
         }
 
-        public IHttpActionResult GetAllEmployees() {
-            try {
+        public IHttpActionResult GetAllEmployees()
+        {
+            try
+            {
                 var employees = _repository.GetEmployees();
                 
                 if(employees != null)
@@ -53,12 +56,12 @@ namespace WebRestApi.Controllers
                     }
                     else
                     {
-                        return BadRequest("I don't think that exists.");
+                        return NotFound();
                     }
                 }
                 else
                 {
-                    return BadRequest("Nice try, but this won't work");
+                    return BadRequest("Nice try, but this won't work.");
                 }
             }
             catch (Exception)
@@ -67,13 +70,32 @@ namespace WebRestApi.Controllers
             }
         }
 
-        /*
-        [Route("api/Employees/SetEmployee")]
-        public string SetEmployee(string Name, string Department) {
-            int id = 0; // TODO;
-            var data = _repository.SetEmployee(Name, Department, id);
-            return data;
-        }*/
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] Employee employee) {
+            try
+            {
+                if(employee.Name == null || employee.Department == null)
+                {
+                    return BadRequest("You gotta supply us something.");
+                }
+                else {
+                    var status = _repository.SetEmployee(employee.Name, employee.Department, employee.Id);
+                    if (status)
+                    {
+                        return Ok("Success");
+                    }
+                    else
+                    {
+                        return InternalServerError();
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }  
+        }
 
     }
 }
