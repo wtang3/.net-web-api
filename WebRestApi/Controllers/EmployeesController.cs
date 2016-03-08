@@ -1,26 +1,79 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Web.Http;
-using WebRestApi.Models;
-using WebRestApi.Interfaces;
 using WebRestApi.Providers;
+using WebRestApi.Interfaces;
+using WebRestApi.Helpers;
 
 namespace WebRestApi.Controllers
 {
+    [RoutePrefix("api/Employee")]
     public class EmployeesController : ApiController
     {
 
-        IDataRepository DataRepo = new TestData();
+        IDataRepository _repository;
 
-        public Employee Get(int id)
+        public EmployeesController()
         {
-            var employee = DataRepo.GetEmployee(id);
-
-            return employee;
+            _repository = new TestData();
         }
-        public List<Employee> GetAllEmployees()
+
+        public EmployeesController(IDataRepository repository)
         {
-
-            return DataRepo.GetEmployees();
+            _repository = repository;
         }
+
+        public IHttpActionResult GetAllEmployees() {
+            try {
+                var employees = _repository.GetEmployees();
+                
+                if(employees != null)
+                {
+                    return Ok(employees);
+                }
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+
+            return InternalServerError();
+        }
+
+        public IHttpActionResult Get(int id)
+        {
+            try
+            {
+                if (id.IsTypeInt() && id > 0)
+                {
+                    var employees = _repository.GetEmployee(id);
+
+                    if (employees != null)
+                    {
+                        return Ok(employees);
+                    }
+                    else
+                    {
+                        return BadRequest("I don't think that exists.");
+                    }
+                }
+                else
+                {
+                    return BadRequest("Nice try, but this won't work");
+                }
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
+
+        /*
+        [Route("api/Employees/SetEmployee")]
+        public string SetEmployee(string Name, string Department) {
+            int id = 0; // TODO;
+            var data = _repository.SetEmployee(Name, Department, id);
+            return data;
+        }*/
+
     }
 }

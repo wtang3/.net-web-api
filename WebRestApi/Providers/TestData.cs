@@ -3,48 +3,50 @@ using WebRestApi.Models;
 using WebRestApi.Interfaces;
 using System.Linq;
 using System;
-using System.Net;
+using System.Web.Http;
 
 namespace WebRestApi.Providers
 {
     public class TestData : IDataRepository
     {
-        List<Employee> employees = new List<Employee>();
+        static List<Employee> employees = new List<Employee>();
 
         public TestData()
         {
-            Employee employee1 = new Employee()
-            {
-                Id = 1,
-                Name = "Will Tang",
-                Department = "Computer Science"
-            };
+            if(employees.Count() == 0) {
+                Employee employee1 = new Employee()
+                {
+                    Id = 1,
+                    Name = "Will Tang",
+                    Department = "Computer Science"
+                };
 
-            Employee employee2 = new Employee()
-            {
-                Id = 2,
-                Name = "John Do",
-                Department = "Physics"
-            };
+                Employee employee2 = new Employee()
+                {
+                    Id = 2,
+                    Name = "John Do",
+                    Department = "Physics"
+                };
 
-            Employee employee3 = new Employee()
-            {
-                Id = 3,
-                Name = "Daniel Kim",
-                Department = "Chemistry"
-            };
+                Employee employee3 = new Employee()
+                {
+                    Id = 3,
+                    Name = "Daniel Kim",
+                    Department = "Chemistry"
+                };
 
-            Employee employee4 = new Employee()
-            {
-                Id = 4,
-                Name = "Raj Kumar",
-                Department = "Engineering"
-            };
+                Employee employee4 = new Employee()
+                {
+                    Id = 4,
+                    Name = "Raj Kumar",
+                    Department = "Engineering"
+                };
 
-            employees.Add(employee1);
-            employees.Add(employee2);
-            employees.Add(employee3);
-            employees.Add(employee4);
+                employees.Add(employee1);
+                employees.Add(employee2);
+                employees.Add(employee3);
+                employees.Add(employee4);
+            }
         }
 
         /// <summary>
@@ -79,18 +81,38 @@ namespace WebRestApi.Providers
         /// 
         /// </summary>
         /// <param name="employee"></param>
-        public void PostEmployee(Employee employee)
+        public string SetEmployee(string Name, string Department, int id=-1)
         {
-            throw new NotImplementedException();
-        }
+            if (id != -1)
+            {
+                var name = employees.Where(x => x.Name == Name);
+                var employee = new Employee();
+                if (!name.Any())
+                {
+                    id = employees.Last().Id;
+                    employee.Id = id + 1;
+                    employee.Name = Name;
+                    employee.Department = Department;
+                    employees.Add(employee);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="employees"></param>
-        public void PostEmployees(List<Employee> employees)
-        {
-            throw new NotImplementedException();
+                    return "Success";
+                }
+            }
+            else
+            {
+                var name = employees.Where(x => x.Name == Name);
+                var employee = new Employee();
+                if (!name.Any())
+                {
+                    employee.Id = id;
+                    employee.Name = Name;
+                    employee.Department = Department;
+                    employees.Add(employee);
+
+                    return "Success";
+                }
+            }
+            return "Request Failed";
         }
     }
 }

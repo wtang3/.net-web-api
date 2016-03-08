@@ -85,6 +85,5 @@ F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\bin\Mic
 F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\bin\Microsoft.Owin.Security.Twitter.xml
 F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\bin\System.Web.Http.Owin.xml
-F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\obj\Debug\WebRestApi.csprojResolveAssemblyReference.cache
 F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\obj\Debug\WebRestApi.dll
 F:\stuff\Program Files\visualstudioproject\restapi\WebRestApi\WebRestApi\obj\Debug\WebRestApi.pdb
