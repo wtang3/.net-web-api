@@ -53,7 +53,7 @@ namespace WebRestApi.Providers
         /// Method for returning all employees
         /// </summary>
         /// <returns> Returns a list of Employee objects</returns>
-        public List<Employee> GetEmployees() {
+        public IEnumerable<Employee> GetEmployees() {
             return employees;
         }
 
@@ -62,7 +62,7 @@ namespace WebRestApi.Providers
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Returns a single Employee</returns>
-        Employee IDataRepository.GetEmployee(int id)
+        public Employee GetEmployee(int id)
         {
             var employee = employees.Where(x => x.Id == id);
             if (employee.Any())
@@ -81,7 +81,7 @@ namespace WebRestApi.Providers
         /// 
         /// </summary>
         /// <param name="employee"></param>
-        public bool SetEmployee(string Name, string Department, int Id)
+        public Employee SetEmployee(int Id, string Name, string Department)
         {
             if (Id == 0)
             {
@@ -95,24 +95,44 @@ namespace WebRestApi.Providers
                     employee.Department = Department;
                     employees.Add(employee);
 
-                    return true;
+                    return employee;
                 }
             }
             else
             {
-                var name = employees.Where(x => x.Name == Name);
+                return null;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Name"></param>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        public Employee UpdateEmployee(int Id, string Name, string Department)
+        {
+            if (Id !=0 )
+            {
+                var name = employees.Where(x => x.Id == Id);
                 var employee = new Employee();
-                if (!name.Any())
+                if (name.Any())
                 {
                     employee.Id = Id;
                     employee.Name = Name;
                     employee.Department = Department;
                     employees.Add(employee);
 
-                    return true;
+                    return employee;
                 }
             }
-            return false;
+            else
+            {
+                return null;
+            }
+            return null;
         }
     }
 }

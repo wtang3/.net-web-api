@@ -22,10 +22,10 @@ namespace Tests
         }
 
         [TestCase]
-        public void Employee_Is_Correct_Type()
+        public void Assert_Employees_Are_Not_Empty()
         {
             var employees = TestRepo.GetEmployees();
-            Assert.IsInstanceOf(typeof(List<Employee>), employees);
+            Assert.IsNotEmpty(employees);
         }
         [TestCase(1)]
         public void Employees_Are_Not_Null(int id)

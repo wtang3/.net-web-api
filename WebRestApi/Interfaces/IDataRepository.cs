@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using WebRestApi.Models;
@@ -7,8 +8,9 @@ namespace WebRestApi.Interfaces
 {
     public interface IDataRepository
     {
-        List<Employee> GetEmployees();
-        Employee  GetEmployee(int id);
-        bool SetEmployee(string Name, string Department, int id );
+        IEnumerable<Employee> GetEmployees();
+        Employee GetEmployee(int id);
+        Employee SetEmployee(int Id, string Name, string Department);
+        Employee UpdateEmployee(int Id, string Name, string Department);
     }
 }

@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
+using WebRestApi.Models;
 
 namespace WebRestApi
 {
@@ -18,9 +19,19 @@ namespace WebRestApi
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
-            // Web API routes
             config.MapHttpAttributeRoutes();
 
+            /*
+            For OData Purposes
+            ODataModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Employee>("Employees");
+       
+            config.MapODataServiceRoute(
+                routeName: "ODataRoute",
+                routePrefix: "odata",
+                model: builder.GetEdmModel());*/
+ 
+            // Web API routes
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

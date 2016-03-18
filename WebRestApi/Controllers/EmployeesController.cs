@@ -4,9 +4,11 @@ using WebRestApi.Providers;
 using WebRestApi.Interfaces;
 using WebRestApi.Helpers;
 using WebRestApi.Models;
+using System.Collections.Generic;
 
 namespace WebRestApi.Controllers
 {
+   
     [RoutePrefix("api/Employee")]
     public class EmployeesController : ApiController
     {
@@ -74,15 +76,15 @@ namespace WebRestApi.Controllers
         public IHttpActionResult Post([FromBody] Employee employee) {
             try
             {
-                if(employee.Name == null || employee.Department == null)
+                if (employee.Name == null || employee.Department == null)
                 {
                     return BadRequest("You gotta supply us something.");
                 }
                 else {
-                    var status = _repository.SetEmployee(employee.Name, employee.Department, employee.Id);
-                    if (status)
+                    var result = _repository.SetEmployee(employee.Id, employee.Name, employee.Department);
+                    if (result != null)
                     {
-                        return Ok("Success");
+                        return Created(Request.RequestUri + "/", result);
                     }
                     else
                     {
@@ -94,8 +96,46 @@ namespace WebRestApi.Controllers
             catch (Exception)
             {
                 return InternalServerError();
-            }  
+            }
         }
 
+        public IHttpActionResult Put([FromBody] Employee employee)
+        {
+            try
+            {
+                if (employee.Id == 0 )
+                {
+                    return BadRequest("You gotta supply us something.");
+                }
+                else {
+                    var result = _repository.UpdateEmployee(employee.Id, employee.Name, employee.Department);
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return InternalServerError();
+                    }
+                }
+
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
     }
+
+    /*public class EmployeesController : ODataController
+      {
+           IDataRepository _dataRepo = new TestData();
+
+           [EnableQuery]
+           public IQueryable<Employee> Get()
+           {
+               return _dataRepo.GetEmployees();
+           }
+       }
+    */
 }
