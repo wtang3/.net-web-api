@@ -53,7 +53,8 @@ namespace WebRestApi.Providers
         /// Method for returning all employees
         /// </summary>
         /// <returns> Returns a list of Employee objects</returns>
-        public IEnumerable<Employee> GetEmployees() {
+        public IEnumerable<Employee> GetEmployees()
+        {
             return employees;
         }
 

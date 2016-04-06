@@ -4,7 +4,6 @@ using WebRestApi.Providers;
 using WebRestApi.Interfaces;
 using WebRestApi.Helpers;
 using WebRestApi.Models;
-using System.Collections.Generic;
 
 namespace WebRestApi.Controllers
 {
@@ -25,7 +24,7 @@ namespace WebRestApi.Controllers
             _repository = repository;
         }
 
-        public IHttpActionResult GetAllEmployees()
+        public IHttpActionResult GetAllEmployees(string sort="id")
         {
             try
             {
@@ -33,7 +32,7 @@ namespace WebRestApi.Controllers
                 
                 if(employees != null)
                 {
-                    return Ok(employees);
+                    return Ok(employees.ApplySort(sort));
                 }
             }
             catch (Exception)
