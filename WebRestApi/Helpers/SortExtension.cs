@@ -6,7 +6,7 @@ using System.Linq.Dynamic;
 
 namespace WebRestApi.Helpers
 {
-    public static class IQueryableExtensions
+    public static class SortExtension
     {
         public static IEnumerable<T> ApplySort<T>(this IEnumerable<T> source, string sort)
         {
