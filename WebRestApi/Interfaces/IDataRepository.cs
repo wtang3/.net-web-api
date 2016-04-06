@@ -12,5 +12,6 @@ namespace WebRestApi.Interfaces
         Employee GetEmployee(int id);
         Employee SetEmployee(int Id, string Name, string Department);
         Employee UpdateEmployee(int Id, string Name, string Department);
+        bool DeleteEmployee(int id);
     }
 }

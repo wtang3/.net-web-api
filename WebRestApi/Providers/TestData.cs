@@ -134,5 +134,15 @@ namespace WebRestApi.Providers
             }
             return null;
         }
+
+        public bool DeleteEmployee(int id)
+        {
+            var employee = employees.FirstOrDefault(x => x.Id == id);
+            if (employee != null){
+                employees.Remove(employee);
+                return true;
+            }
+            return false;
+        }
     }
 }

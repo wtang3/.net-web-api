@@ -125,6 +125,25 @@ namespace WebRestApi.Controllers
                 return InternalServerError();
             }
         }
+
+        public IHttpActionResult Delete(int id)
+        {
+            try
+            {
+                var result = _repository.DeleteEmployee(id);
+                if(result == true)
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
+        }
+
     }
 
     /*public class EmployeesController : ODataController
