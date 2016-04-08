@@ -8,7 +8,7 @@ using WebRestApi.Models;
 namespace WebRestApi.Controllers
 {
    
-    [RoutePrefix("api/Employee")]
+    [Route("api/Employee")]
     public class EmployeesController : ApiController
     {
 
