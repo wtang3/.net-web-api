@@ -4,11 +4,13 @@ using WebRestApi.Providers;
 using WebRestApi.Interfaces;
 using WebRestApi.Helpers;
 using WebRestApi.Models;
+using System.Web;
+using System.Linq.Dynamic;
 
 namespace WebRestApi.Controllers
 {
    
-    [Route("api/Employee")]
+
     public class EmployeesController : ApiController
     {
 
@@ -24,15 +26,53 @@ namespace WebRestApi.Controllers
             _repository = repository;
         }
 
-        public IHttpActionResult GetAllEmployees(string sort="id")
+        [Route("api/Employees", Name = "EmployeeList")]
+        public IHttpActionResult GetAllEmployees(string sort="id", int page = 1, int pageSize = 5)
         {
             try
             {
                 var employees = _repository.GetEmployees();
-                
+                var count = employees.Count;
+                var totalPages = (int)Math.Ceiling((double)count / pageSize);
+                var urlHelper = new System.Web.Http.Routing.UrlHelper(Request);
+                const int upperPageBound = 10;
+
+                // cap the page size
+                if(pageSize > upperPageBound)
+                {
+                    pageSize = upperPageBound;
+                }
+
+                var previousLink = page > 1 ? urlHelper.Link("EmployeeList",
+                    new
+                    {
+                        page = page - 1,
+                        pageSize = pageSize,
+                        sort = sort
+                    }) : "";
+                var nextLink = page < totalPages ? urlHelper.Link("EmployeeList",
+                    new
+                    {
+                        page = page + 1,
+                        pageSize = pageSize,
+                        sort = sort
+                    }) : "";
+
+                var pagination = new
+                {
+                    currentPage = page,
+                    pageSize = pageSize,
+                    totalCount = count,
+                    totalPages = totalPages,
+                    previousPageLink = previousLink,
+                    nextPageLink = nextLink
+                };
+
+                HttpContext.Current.Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(pagination));
+
                 if(employees != null)
                 {
-                    return Ok(employees.ApplySort(sort));
+                    return Ok(employees.ApplySort(sort).Skip(pageSize * (page - 1)).Take(pageSize));
                 }
             }
             catch (Exception)
