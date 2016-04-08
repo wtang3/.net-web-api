@@ -8,7 +8,7 @@ namespace WebRestApi.Interfaces
 {
     public interface IDataRepository
     {
-        IEnumerable<Employee> GetEmployees();
+        ICollection<Employee> GetEmployees();
         Employee GetEmployee(int id);
         Employee SetEmployee(int Id, string Name, string Department);
         Employee UpdateEmployee(int Id, string Name, string Department);
