@@ -6,6 +6,8 @@ using WebRestApi.Helpers;
 using WebRestApi.Models;
 using System.Web;
 using System.Linq.Dynamic;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebRestApi.Controllers
 {
@@ -27,46 +29,19 @@ namespace WebRestApi.Controllers
         }
 
         [Route("api/Employees", Name = "EmployeeList")]
-        public IHttpActionResult GetAllEmployees(string sort="id", int page = 1, int pageSize = 5)
+        public IHttpActionResult GetAllEmployees(string sort="id", int page = 1, int pageSize = 5, string fields = null)
         {
             try
             {
                 var employees = _repository.GetEmployees();
-                var count = employees.Count;
-                var totalPages = (int)Math.Ceiling((double)count / pageSize);
-                var urlHelper = new System.Web.Http.Routing.UrlHelper(Request);
-                const int upperPageBound = 10;
+                var pagination = Helper.CreatePaginationObject(employees, Request, sort, page, pageSize, fields);
+             
+                List<string> fieldList = new List<string>();
 
-                // cap the page size
-                if(pageSize > upperPageBound)
+                if(fields != null)
                 {
-                    pageSize = upperPageBound;
+                    fieldList = fields.ToLower().Split(',').ToList();
                 }
-
-                var previousLink = page > 1 ? urlHelper.Link("EmployeeList",
-                    new
-                    {
-                        page = page - 1,
-                        pageSize = pageSize,
-                        sort = sort
-                    }) : "";
-                var nextLink = page < totalPages ? urlHelper.Link("EmployeeList",
-                    new
-                    {
-                        page = page + 1,
-                        pageSize = pageSize,
-                        sort = sort
-                    }) : "";
-
-                var pagination = new
-                {
-                    currentPage = page,
-                    pageSize = pageSize,
-                    totalCount = count,
-                    totalPages = totalPages,
-                    previousPageLink = previousLink,
-                    nextPageLink = nextLink
-                };
 
                 HttpContext.Current.Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(pagination));
 
