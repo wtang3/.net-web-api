@@ -33,7 +33,7 @@ namespace WebRestApi.Controllers
         {
             try
             {
-                var employees = _repository.GetEmployees();
+                var employees = _repository.GetEmployees(sort, page, pageSize);
                 var pagination = Helper.CreatePaginationObject(employees, Request, sort, page, pageSize, fields);
              
                 List<string> fieldList = new List<string>();
@@ -47,7 +47,7 @@ namespace WebRestApi.Controllers
 
                 if(employees != null)
                 {
-                    return Ok(employees.ApplySort(sort).Skip(pageSize * (page - 1)).Take(pageSize));
+                    return Ok(employees);
                 }
             }
             catch (Exception)

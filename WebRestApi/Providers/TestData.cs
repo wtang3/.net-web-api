@@ -4,6 +4,7 @@ using WebRestApi.Interfaces;
 using System.Linq;
 using System;
 using System.Web.Http;
+using WebRestApi.Helpers;
 
 namespace WebRestApi.Providers
 {
@@ -53,11 +54,9 @@ namespace WebRestApi.Providers
         /// Method for returning all employees
         /// </summary>
         /// <returns> Returns a list of Employee objects</returns>
-        public ICollection<Employee> GetEmployees()
+        public ICollection<Employee> GetEmployees(string sort, int page, int pageSize)
         {
-            return employees;
-
-            
+            return employees.ApplySort(sort).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
         }
 
         /// <summary>
