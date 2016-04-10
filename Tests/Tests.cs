@@ -22,21 +22,38 @@ namespace Tests
         }
 
         [TestCase]
-        public void Assert_Employees_Are_Not_Empty()
+        public void Employees_Are_Not_Empty()
         {
-            var employees = TestRepo.GetEmployees();
+            // defaults
+            string sort = null;
+            int page = 1;
+            int pageSize = 5;
+            var employees = TestRepo.GetEmployees(sort, page, pageSize);
             Assert.IsNotEmpty(employees);
         }
         [TestCase(1)]
         public void Employees_Are_Not_Null(int id)
         {
-            var employees = TestRepo.GetEmployees();
+            // defaults
+            string sort = null;
+            int page = 1;
+            int pageSize = 5;
+
+            var employees = TestRepo.GetEmployees(sort, page, pageSize);
             var employee = TestRepo.GetEmployee(id);
             Assert.IsNotNull(employees);
             Assert.IsNotNull(employee);
         }
 
-        //[TestCase("1")]
-        //public void Employee
+        [TestCase]
+        public void Test_Paging_Functionality()
+        {
+            string sort = null;
+            int page = 2;
+            int pageSize = 2;
+    
+            var employees = TestRepo.GetEmployees(sort, page, pageSize);
+            Assert.That(employees.Count, Is.EqualTo(2));    
+        }
     }
 }
