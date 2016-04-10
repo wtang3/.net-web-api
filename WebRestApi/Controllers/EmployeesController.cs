@@ -159,16 +159,4 @@ namespace WebRestApi.Controllers
         }
 
     }
-
-    /*public class EmployeesController : ODataController
-      {
-           IDataRepository _dataRepo = new TestData();
-
-           [EnableQuery]
-           public IQueryable<Employee> Get()
-           {
-               return _dataRepo.GetEmployees();
-           }
-       }
-    */
 }
