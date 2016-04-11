@@ -49,6 +49,9 @@ namespace WebRestApi
 
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver 
                 = new CamelCasePropertyNamesContractResolver();
+
+            // Cache Handler
+            config.MessageHandlers.Add(new CacheCow.Server.CachingHandler(config));
         }
     }
 }
