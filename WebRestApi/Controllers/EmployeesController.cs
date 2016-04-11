@@ -31,18 +31,15 @@ namespace WebRestApi.Controllers
         [Route("api/Employees", Name = "EmployeeList")]
         public IHttpActionResult GetAllEmployees(string sort="id", int page = 1, int pageSize = 5, string fields = null)
         {
+            List<string> fieldList = new List<string>();
+
+            fieldList = fields != null ? fieldList = fields.ToLower().Split(',').ToList() : null;
+
             try
             {
-                var employees = _repository.GetEmployees(sort, page, pageSize);
+                var employees = _repository.GetEmployees(sort, page, pageSize, fieldList);
                 var pagination = Helper.CreatePaginationObject(employees, Request, sort, page, pageSize, fields);
              
-                List<string> fieldList = new List<string>();
-
-                if(fields != null)
-                {
-                    fieldList = fields.ToLower().Split(',').ToList();
-                }
-
                 HttpContext.Current.Response.Headers.Add("X-Pagination", Newtonsoft.Json.JsonConvert.SerializeObject(pagination));
 
                 if(employees != null)

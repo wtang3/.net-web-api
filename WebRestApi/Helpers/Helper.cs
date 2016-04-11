@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using WebRestApi.Models;
 
@@ -22,6 +24,40 @@ namespace WebRestApi.Helpers
                     return true;
                 default:
                     return false;
+            }
+        }
+
+        // TODO data shaping
+        public static dynamic CreateDataShapingObject<T>(T data, List<string> fields)
+        {
+            if (!fields.Any())
+            {
+                return data;
+            }
+            else
+            {
+                IDictionary<string, object> dataShaped = new ExpandoObject();
+                var type = data.GetType();
+                foreach(var pair in fields.Select(x => new {
+                    Name = x,
+                    Property = type.GetProperty(x)
+                }))
+                {
+                    dataShaped[pair.Name] = pair.Property.GetValue(data, new object[0]);
+
+                }
+
+                /*var dataShaped = new ExpandoObject();
+                foreach (var field in fields)
+                {
+                    var fieldValue = data.GetType().GetProperty(field, BindingFlags.IgnoreCase |
+                                                                       BindingFlags.Instance |
+                                                                       BindingFlags.Public)
+                                                   .GetValue(data, null);
+                    ((IDictionary<string, object>) dataShaped).Add(field, fieldValue);
+                }*/
+
+                return dataShaped;
             }
         }
 

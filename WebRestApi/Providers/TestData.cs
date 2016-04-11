@@ -43,10 +43,64 @@ namespace WebRestApi.Providers
                     Department = "Engineering"
                 };
 
+                Employee employee5 = new Employee()
+                {
+
+                    Id = 5,
+                    Name = "Sasha Nisimova",
+                    Department = "Neuroscience"
+                };
+
+                Employee employee6 = new Employee()
+                {
+
+                    Id = 5,
+                    Name = "Becky Smith",
+                    Department = "Biology"
+                };
+
+                Employee employee7 = new Employee()
+                {
+
+                    Id = 6,
+                    Name = "Dave Johnson",
+                    Department = "Human Resources"
+                };
+
+                Employee employee8 = new Employee()
+                {
+
+                    Id = 7,
+                    Name = "Tatyana Garcia",
+                    Department = "Human Resources"
+                };
+
+                Employee employee9 = new Employee()
+                {
+
+                    Id = 8,
+                    Name = "Karen Yang",
+                    Department = "Physics"
+                };
+
+                Employee employee10 = new Employee()
+                {
+
+                    Id = 9,
+                    Name = "Sophie Chihiro",
+                    Department = "Aerospace"
+                };
+
                 employees.Add(employee1);
                 employees.Add(employee2);
                 employees.Add(employee3);
                 employees.Add(employee4);
+                employees.Add(employee5);
+                employees.Add(employee6);
+                employees.Add(employee7);
+                employees.Add(employee8);
+                employees.Add(employee9);
+                employees.Add(employee10);
             }
         }
 
@@ -54,9 +108,26 @@ namespace WebRestApi.Providers
         /// Method for returning all employees
         /// </summary>
         /// <returns> Returns a list of Employee objects</returns>
-        public ICollection<Employee> GetEmployees(string sort, int page, int pageSize)
+        public ICollection<Employee> GetEmployees(string sort, int page, int pageSize, List<string> fields)
         {
-            return employees.ApplySort(sort).Skip(pageSize * (page - 1)).Take(pageSize).ToList();
+            // TODO Data Shaping
+
+            /*var test = new { "Id", "Department" };
+            
+            var temp = employees.ApplySort(sort)
+                                      .Skip(pageSize * (page - 1))
+                                      .Take(pageSize);
+
+            
+            var data = temp.Select(x => Helper.CreateDataShapingObject(temp, fields));
+            
+                                     
+
+            List<Employee> data = new List<Employee>();
+            data.Add((Employee) temp);*/
+            return employees.ApplySort(sort)
+                                      .Skip(pageSize * (page - 1))
+                                      .Take(pageSize).ToList();
         }
 
         /// <summary>

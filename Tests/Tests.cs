@@ -28,7 +28,9 @@ namespace Tests
             string sort = null;
             int page = 1;
             int pageSize = 5;
-            var employees = TestRepo.GetEmployees(sort, page, pageSize);
+            List<string> fields = new List<string>();
+
+            var employees = TestRepo.GetEmployees(sort, page, pageSize, fields);
             Assert.IsNotEmpty(employees);
         }
         [TestCase(1)]
@@ -38,8 +40,9 @@ namespace Tests
             string sort = null;
             int page = 1;
             int pageSize = 5;
+            List<string> fields = new List<string>();
 
-            var employees = TestRepo.GetEmployees(sort, page, pageSize);
+            var employees = TestRepo.GetEmployees(sort, page, pageSize, fields);
             var employee = TestRepo.GetEmployee(id);
             Assert.IsNotNull(employees);
             Assert.IsNotNull(employee);
@@ -51,8 +54,9 @@ namespace Tests
             string sort = null;
             int page = 2;
             int pageSize = 2;
-    
-            var employees = TestRepo.GetEmployees(sort, page, pageSize);
+            List<string> fields = new List<string>();
+
+            var employees = TestRepo.GetEmployees(sort, page, pageSize, fields);
             Assert.That(employees.Count, Is.EqualTo(2));    
         }
     }
