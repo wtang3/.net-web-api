@@ -110,8 +110,18 @@ namespace WebRestApi.Providers
         /// <returns> Returns a list of Employee objects</returns>
         public ICollection<Employee> GetEmployees(string sort, int page, int pageSize, List<string> fields)
         {
-            // TODO Data Shaping
+            string [] validFields = { "id", "department", "name" };
+            bool[] flags = Helper.ValidateFields(validFields, fields);
 
+            
+
+            // TODO Data Shaping
+            // fieldList = fields != null ? fieldList = fields.ToLower().Split(',').ToList() : null;
+            var data = employees.ApplySort(sort)
+                                          .Skip(pageSize * (page - 1))
+                                      .Take(pageSize);
+                                      //.Select(x => Helper.CreateDataShapingObject<Employee>(x,fields)); 
+           
             /*var test = new { "Id", "Department" };
             
             var temp = employees.ApplySort(sort)

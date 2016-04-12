@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
+using System.Linq.Dynamic;
 using System.Reflection;
 using System.Web;
 using WebRestApi.Models;
@@ -27,16 +27,41 @@ namespace WebRestApi.Helpers
             }
         }
 
+        public static bool[] ValidateFields(string [] validFields, List<string> fields) {
+            int size = validFields.Length + 1;
+            bool [] results = new bool[size];
+            int counter = 0;
+            foreach(var field in fields)
+            {
+                foreach (var validField in validFields)
+                {
+                    if(field == validField)
+                    {
+                        results[counter] = true;
+                    }
+                    else
+                    {
+                        results[counter] = false;
+                    }
+                }
+                counter++;
+            }
+            return results;
+        }
         // TODO data shaping
-        public static dynamic CreateDataShapingObject<T>(T data, List<string> fields)
+        public static T CreateDataShapingObject<T>(T data, List<string> fields)
         {
-            if (!fields.Any())
+
+            if (fields.Count < 1)
             {
                 return data;
             }
             else
             {
-                IDictionary<string, object> dataShaped = new ExpandoObject();
+                return data;
+            }
+        }
+                /*IDictionary<string, object> dataShaped = new ExpandoObject();
                 var type = data.GetType();
                 foreach(var pair in fields.Select(x => new {
                     Name = x,
@@ -55,11 +80,11 @@ namespace WebRestApi.Helpers
                                                                        BindingFlags.Public)
                                                    .GetValue(data, null);
                     ((IDictionary<string, object>) dataShaped).Add(field, fieldValue);
-                }*/
+                }
 
                 return dataShaped;
             }
-        }
+        }*/
 
         public static object CreatePaginationObject<T>(ICollection<T> data,
                                                     System.Net.Http.HttpRequestMessage Request, 
