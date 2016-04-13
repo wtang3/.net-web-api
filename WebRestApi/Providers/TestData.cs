@@ -108,36 +108,12 @@ namespace WebRestApi.Providers
         /// Method for returning all employees
         /// </summary>
         /// <returns> Returns a list of Employee objects</returns>
-        public ICollection<Employee> GetEmployees(string sort, int page, int pageSize, List<string> fields)
+        public ICollection<object> GetEmployees(string sort, int page, int pageSize, List<string> fields)
         {
-            string [] validFields = { "id", "department", "name" };
-            bool[] flags = Helper.ValidateFields(validFields, fields);
-
-            
-
-            // TODO Data Shaping
-            // fieldList = fields != null ? fieldList = fields.ToLower().Split(',').ToList() : null;
-            var data = employees.ApplySort(sort)
-                                          .Skip(pageSize * (page - 1))
-                                      .Take(pageSize);
-                                      //.Select(x => Helper.CreateDataShapingObject<Employee>(x,fields)); 
-           
-            /*var test = new { "Id", "Department" };
-            
-            var temp = employees.ApplySort(sort)
-                                      .Skip(pageSize * (page - 1))
-                                      .Take(pageSize);
-
-            
-            var data = temp.Select(x => Helper.CreateDataShapingObject(temp, fields));
-            
-                                     
-
-            List<Employee> data = new List<Employee>();
-            data.Add((Employee) temp);*/
             return employees.ApplySort(sort)
                                       .Skip(pageSize * (page - 1))
-                                      .Take(pageSize).ToList();
+                                      .Take(pageSize)
+                                      .Select(x => Helper.CreateDataShapingObject(x, fields)).ToList();
         }
 
         /// <summary>

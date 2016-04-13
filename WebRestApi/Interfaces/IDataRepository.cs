@@ -8,7 +8,7 @@ namespace WebRestApi.Interfaces
 {
     public interface IDataRepository
     {
-        ICollection<Employee> GetEmployees(string sort, int page, int pageSize, List<string> fields);
+        ICollection<object> GetEmployees(string sort, int page, int pageSize, List<string> fields);
         Employee GetEmployee(int id);
         Employee SetEmployee(int Id, string Name, string Department);
         Employee UpdateEmployee(int Id, string Name, string Department);

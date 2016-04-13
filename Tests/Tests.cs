@@ -22,7 +22,7 @@ namespace Tests
         }
 
         [TestCase]
-        public void Employees_Are_Not_Empty()
+        public void Test_Employees_Are_Not_Empty()
         {
             // defaults
             string sort = null;
@@ -34,7 +34,7 @@ namespace Tests
             Assert.IsNotEmpty(employees);
         }
         [TestCase(1)]
-        public void Employees_Are_Not_Null(int id)
+        public void Test_Employees_Are_Not_Null(int id)
         {
             // defaults
             string sort = null;
@@ -58,6 +58,12 @@ namespace Tests
 
             var employees = TestRepo.GetEmployees(sort, page, pageSize, fields);
             Assert.That(employees.Count, Is.EqualTo(2));    
+        }
+
+        [TestCase]
+        public void Test_Filtering_Functionality()
+        {
+
         }
     }
 }

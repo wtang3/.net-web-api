@@ -28,6 +28,14 @@ namespace WebRestApi.Controllers
             _repository = repository;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sort"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         [Route("api/Employees", Name = "EmployeeList")]
         public IHttpActionResult GetAllEmployees(string sort="id", int page = 1, int pageSize = 5, string fields = null)
         {
@@ -55,6 +63,11 @@ namespace WebRestApi.Controllers
             return InternalServerError();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Get(int id)
         {
             try
@@ -83,6 +96,11 @@ namespace WebRestApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPost]
         public IHttpActionResult Post([FromBody] Employee employee) {
             try
@@ -110,6 +128,11 @@ namespace WebRestApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         public IHttpActionResult Put([FromBody] Employee employee)
         {
             try
@@ -137,6 +160,11 @@ namespace WebRestApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public IHttpActionResult Delete(int id)
         {
             try

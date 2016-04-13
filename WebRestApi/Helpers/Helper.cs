@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Linq.Dynamic;
 using System.Reflection;
 using System.Web;
@@ -27,70 +28,41 @@ namespace WebRestApi.Helpers
             }
         }
 
-        public static bool[] ValidateFields(string [] validFields, List<string> fields) {
-            int size = validFields.Length + 1;
-            bool [] results = new bool[size];
-            int counter = 0;
-            foreach(var field in fields)
-            {
-                foreach (var validField in validFields)
-                {
-                    if(field == validField)
-                    {
-                        results[counter] = true;
-                    }
-                    else
-                    {
-                        results[counter] = false;
-                    }
-                }
-                counter++;
-            }
-            return results;
+        public static object ConvertListType<T>(List<object> value, Type type)
+        {
+            var containedType = type.GenericTypeArguments.First();
+            return value.Select(x => Convert.ChangeType(x, type));
+
         }
-        // TODO data shaping
-        public static T CreateDataShapingObject<T>(T data, List<string> fields)
+
+        public static object CreateDataShapingObject<T>(T data, List<string> fields)
         {
 
-            if (fields.Count < 1)
+            if (fields == null)
             {
                 return data;
             }
             else
             {
-                return data;
-            }
-        }
-                /*IDictionary<string, object> dataShaped = new ExpandoObject();
-                var type = data.GetType();
-                foreach(var pair in fields.Select(x => new {
-                    Name = x,
-                    Property = type.GetProperty(x)
-                }))
-                {
-                    dataShaped[pair.Name] = pair.Property.GetValue(data, new object[0]);
-
-                }
-
-                /*var dataShaped = new ExpandoObject();
+                ExpandoObject dataShaped = new ExpandoObject();
                 foreach (var field in fields)
                 {
                     var fieldValue = data.GetType().GetProperty(field, BindingFlags.IgnoreCase |
                                                                        BindingFlags.Instance |
                                                                        BindingFlags.Public)
                                                    .GetValue(data, null);
-                    ((IDictionary<string, object>) dataShaped).Add(field, fieldValue);
-                }
 
+                    ((IDictionary<string, object>)dataShaped).Add(field, fieldValue);
+                }
                 return dataShaped;
             }
-        }*/
-
+        }
+       
         public static object CreatePaginationObject<T>(ICollection<T> data,
-                                                    System.Net.Http.HttpRequestMessage Request, 
-                                                    string sort, 
-                                                    int page, 
-                                                    int pageSize, 
+                                                    System.Net.Http.HttpRequestMessage Request,
+                                                    string sort,
+                                                    int page,
+                                                    int pageSize,
                                                     string fields)
         {
             var count = data.Count;
