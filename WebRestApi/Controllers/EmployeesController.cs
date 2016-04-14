@@ -36,6 +36,7 @@ namespace WebRestApi.Controllers
         /// <param name="pageSize"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
+        /// For versioning add additional function with route v*
         [Route("api/Employees", Name = "EmployeeList")]
         public IHttpActionResult GetAllEmployees(string sort="id", int page = 1, int pageSize = 5, string fields = null)
         {
